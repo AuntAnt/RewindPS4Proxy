@@ -8,7 +8,6 @@
 import Proxy
 
 public protocol ProxyService {
-    func getLastError() -> String
     
     /// Set mode
     func setMode(_ mode: Int, _ url: String) async throws -> [String: Any]
@@ -17,10 +16,13 @@ public protocol ProxyService {
     func detectConnectedClient(_ userAgent: String) -> String
     
     /// Start proxy server
-    func startProxy(_ port: String)
+    func startProxy(_ port: String) async throws
     
     /// Stop proxy server
     func stopProxy()
+    
+    /// Push to log server which mode selected
+    func pushModeSelectionLog(_ modeNumber: Int)
 }
 
 public final class ProxyServiceImpl: ProxyService {
@@ -33,12 +35,17 @@ public final class ProxyServiceImpl: ProxyService {
         helper = Helper()
     }
     
-    public func getLastError() -> String {
-        return RewindGetLastServerError()
-    }
-    
-    public func startProxy(_ port: String) {
+    public func startProxy(_ port: String) async throws {
         RewindStartProxy(port)
+        
+        // wait for the server to try to start
+        try? await Task.sleep(for: .seconds(2))
+        
+        let error = RewindGetLastServerError()
+        
+        if !error.isEmpty {
+            throw RewindError.frameworkError(description: error)
+        }
     }
     
     public func stopProxy() {
@@ -53,5 +60,9 @@ public final class ProxyServiceImpl: ProxyService {
     
     public func detectConnectedClient(_ userAgent: String) -> String {
         return RewindDetector(userAgent)
+    }
+    
+    public func pushModeSelectionLog(_ modeNumber: Int) {
+        RewindOtherLog(modeNumber)
     }
 }
