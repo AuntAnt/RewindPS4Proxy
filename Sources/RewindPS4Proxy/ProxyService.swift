@@ -55,7 +55,11 @@ public final class ProxyServiceImpl: ProxyService {
     public func setMode(_ mode: Int, _ url: String) async throws -> [String: Any] {
         let response = try helper.handleError(for: mode, url: url, RewindSetMode)
         
-        return try helper.extractJSONFrom(str: response)
+        if mode == 1 {
+            return try helper.extractJSONFrom(str: response)
+        } else {
+            return [response: ""]
+        }
     }
     
     public func detectConnectedClient(_ userAgent: String) -> String {
