@@ -1,0 +1,8 @@
+framework module "ProxyServer" {
+	header "ref.h"
+    header "Rewind.objc.h"
+    header "Universe.objc.h"
+    header "ProxyServer.h"
+
+    export *
+}

@@ -1,8 +1,0 @@
-framework module "Proxy" {
-	header "ref.h"
-    header "Rewind.objc.h"
-    header "Universe.objc.h"
-    header "Proxy.h"
-
-    export *
-}

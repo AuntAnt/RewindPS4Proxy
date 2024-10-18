@@ -5,7 +5,7 @@
 //  Created by Anton Kuzmin on 04.09.2024.
 //
 
-import Proxy
+import ProxyServer
 
 public protocol NetworkService {
     
