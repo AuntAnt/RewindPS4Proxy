@@ -19,7 +19,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
             name: "ProxyServer",
-            path: "./Sources/ProxyServer.xcframework"
+            path: "./Binary/ProxyServer.xcframework"
         ),
         .target(
             name: "RewindPS4Proxy",
